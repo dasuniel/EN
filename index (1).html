@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglés en Casa · El curso de mamá</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAFBFC; --card:#FFFFFF; --ink:#1C2733; --soft:#5B6B7B;
+  --pen:#1A56C4; --pen-dark:#12409A; --redpen:#D33A2C;
+  --rule:#D6E4F0; --line:#E3EAF1; --star:#F5B301; --ok:#1E8E5A;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{font-size:17px;}
+body{
+  font-family:"Atkinson Hyperlegible", system-ui, sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.55;
+  padding-bottom:84px;
+}
+h1,h2,h3{font-family:"Bricolage Grotesque", system-ui, sans-serif; line-height:1.2;}
+button{font-family:inherit; font-size:1rem; cursor:pointer;}
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+  outline:3px solid var(--pen); outline-offset:2px; border-radius:6px;
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
+
+.wrap{max-width:680px; margin:0 auto; padding:0 16px;}
+header.top{padding:22px 0 8px;}
+header.top h1{font-size:1.7rem; font-weight:800; letter-spacing:-.02em;}
+header.top h1 .dot{color:var(--pen);}
+header.top p{color:var(--soft); font-size:.95rem;}
+
+.card{
+  background:var(--card); border:1px solid var(--line);
+  border-radius:14px; padding:18px; margin:14px 0;
+}
+.card h2{font-size:1.2rem; margin-bottom:8px;}
+.card h3{font-size:1.05rem; margin:14px 0 6px;}
+
+/* ——— Hoja de cuaderno (firma visual) ——— */
+.cuaderno{
+  background-color:#FFFFFF;
+  background-image:
+    linear-gradient(to right, transparent 44px, #F0B7B1 44px, #F0B7B1 46px, transparent 46px),
+    repeating-linear-gradient(to bottom, transparent, transparent 31px, var(--rule) 31px, var(--rule) 32px);
+  border:1px solid var(--line); border-radius:14px;
+  padding:20px 18px 20px 62px; margin:14px 0;
+}
+.cuaderno .eyebrow{
+  font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--redpen); margin-bottom:2px;
+}
+.cuaderno h2{font-size:1.35rem;}
+.cuaderno .meta{color:var(--soft); font-size:.92rem; margin-bottom:10px;}
+
+.btn{
+  display:inline-block; background:var(--pen); color:#fff; border:none;
+  border-radius:12px; padding:13px 18px; font-weight:700; min-height:48px;
+  transition:background .15s;
+}
+.btn:hover{background:var(--pen-dark);}
+.btn.ghost{background:#fff; color:var(--pen); border:2px solid var(--pen);}
+.btn.small{padding:8px 12px; min-height:40px; font-size:.92rem; border-radius:10px;}
+.btn.done{background:var(--ok);}
+.btn.red{background:var(--redpen);}
+.btn:disabled{opacity:.5; cursor:default;}
+.btnrow{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;}
+
+.speak{
+  background:#EAF1FB; border:1px solid #CFE0F5; color:var(--pen);
+  border-radius:10px; padding:6px 10px; font-size:.95rem; min-height:38px;
+}
+.speak:hover{background:#DDE9F9;}
+
+table.tbl{width:100%; border-collapse:collapse; font-size:.97rem;}
+table.tbl th{
+  text-align:left; font-size:.8rem; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--soft); padding:8px 8px; border-bottom:2px solid var(--line);
+}
+table.tbl td{padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:top;}
+table.tbl td.en{font-weight:700;}
+table.tbl td.pr{color:var(--soft); font-style:italic;}
+
+.badge{
+  display:inline-block; font-size:.78rem; font-weight:700; padding:3px 9px;
+  border-radius:99px; background:#EAF1FB; color:var(--pen);
+}
+.badge.rev{background:#FCEBE9; color:var(--redpen);}
+.badge.lock{background:#EEF1F4; color:var(--soft);}
+.badge.now{background:var(--pen); color:#fff;}
+
+.tabbar{
+  position:fixed; bottom:0; left:0; right:0; background:#fff;
+  border-top:1px solid var(--line); display:flex; justify-content:space-around;
+  padding:6px 4px calc(6px + env(safe-area-inset-bottom)); z-index:50;
+}
+.tabbar button{
+  background:none; border:none; color:var(--soft); font-size:.78rem; font-weight:700;
+  display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 10px;
+  border-radius:10px; min-width:60px;
+}
+.tabbar button .ico{font-size:1.35rem;}
+.tabbar button.active{color:var(--pen); background:#EAF1FB;}
+
+.dialogo{margin:8px 0;}
+.dialogo .ln{display:flex; align-items:flex-start; gap:8px; padding:6px 0; border-bottom:1px dashed var(--line);}
+.dialogo .who{font-weight:700; color:var(--pen); min-width:64px;}
+
+.fill-item{margin:10px 0;}
+.fill-item input{
+  font-family:inherit; font-size:1rem; padding:9px 10px; border:2px solid var(--line);
+  border-radius:10px; width:130px;
+}
+.fill-item.good input{border-color:var(--ok); background:#EDF8F2;}
+.fill-item.bad input{border-color:var(--redpen); background:#FCF0EF;}
+.fill-item .sol{font-weight:700; color:var(--ok); margin-left:8px;}
+
+.match-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;}
+.match-grid button{
+  border:2px solid var(--line); background:#fff; border-radius:10px; padding:11px 8px;
+  font-size:.95rem; min-height:48px;
+}
+.match-grid button.sel{border-color:var(--pen); background:#EAF1FB;}
+.match-grid button.hit{border-color:var(--ok); background:#EDF8F2; color:var(--ok); font-weight:700;}
+
+.flash{
+  background:#fff; border:1px solid var(--line); border-radius:16px; padding:30px 18px;
+  text-align:center; margin:14px 0;
+}
+.flash .es{font-size:1.5rem; font-family:"Bricolage Grotesque"; font-weight:800;}
+.flash .en{font-size:1.3rem; color:var(--pen); font-weight:700; margin-top:8px;}
+.flash .pr{color:var(--soft); font-style:italic;}
+
+.stars{font-size:1.3rem; letter-spacing:.1em;}
+.statgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; text-align:center;}
+.statgrid .num{font-family:"Bricolage Grotesque"; font-weight:800; font-size:1.7rem; color:var(--pen);}
+.statgrid .lbl{font-size:.82rem; color:var(--soft);}
+
+.grade-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0;}
+.grade-row input[type=number]{
+  width:70px; padding:8px; border:2px solid var(--line); border-radius:10px; font-size:1rem;
+}
+.grade-row label{font-size:.88rem; color:var(--soft);}
+textarea.notas{
+  width:100%; min-height:70px; border:2px solid var(--line); border-radius:10px;
+  padding:10px; font-family:inherit; font-size:.95rem; margin-top:6px;
+}
+.bars{display:flex; gap:6px; align-items:flex-end; height:110px; margin-top:12px;}
+.bars .b{flex:1; background:#EAF1FB; border-radius:6px 6px 0 0; position:relative; min-width:10px;}
+.bars .b i{position:absolute; bottom:0; left:0; right:0; background:var(--pen); border-radius:6px 6px 0 0;}
+.bars .b span{position:absolute; bottom:-20px; left:0; right:0; text-align:center; font-size:.7rem; color:var(--soft);}
+
+.teacher-line{border-top:3px solid var(--redpen); margin-top:18px; padding-top:12px;}
+.teacher-line h2{color:var(--redpen);}
+
+.plan-item{display:flex; gap:10px; align-items:center; padding:11px 4px; border-bottom:1px solid var(--line);}
+.plan-item .wn{font-family:"Bricolage Grotesque"; font-weight:800; color:var(--soft); min-width:34px;}
+.plan-item .tt{flex:1;}
+.plan-item .tt small{display:block; color:var(--soft);}
+
+.hint{font-size:.9rem; color:var(--soft);}
+.divider{border:none; border-top:1px solid var(--line); margin:16px 0;}
+ul.simple{padding-left:20px;}
+ul.simple li{margin:6px 0;}
+
+#printArea{display:none;}
+@media print{
+  body > *{display:none !important;}
+  body{padding:0; background:#fff;}
+  #printArea{display:block !important; font-size:12pt; color:#000;}
+  #printArea h1{font-size:18pt; margin-bottom:4pt;}
+  #printArea h2{font-size:14pt; margin:14pt 0 6pt; border-bottom:1pt solid #999; padding-bottom:2pt;}
+  #printArea table{width:100%; border-collapse:collapse; font-size:11pt;}
+  #printArea td, #printArea th{border:1pt solid #999; padding:4pt 6pt; text-align:left;}
+  #printArea .pbreak{page-break-before:always;}
+  #printArea .writeline{border-bottom:1pt solid #555; height:22pt;}
+  #printArea p{margin:5pt 0;}
+}
+</style>
+</head>
+<body>
+<header class="top wrap">
+  <h1>Inglés en Casa<span class="dot">.</span></h1>
+  <p>Tu reto: 15–30 minutos al día, paso a paso.</p>
+</header>
+<main class="wrap" id="view"></main>
+<nav class="tabbar" aria-label="Secciones">
+  <button data-tab="hoy" class="active"><span class="ico">📖</span>Hoy</button>
+  <button data-tab="semana"><span class="ico">📚</span>Semana</button>
+  <button data-tab="repaso"><span class="ico">🔁</span>Repaso</button>
+  <button data-tab="plan"><span class="ico">🗺️</span>Plan</button>
+  <button data-tab="progreso"><span class="ico">⭐</span>Progreso</button>
+</nav>
+<div id="printArea"></div>
+<script>
+"use strict";
+// ============ CONTENIDO · BLOQUE 1 (Semanas 1–12) ============
+const WEEKS = [
+{ n:1, theme:"Saludos y presentaciones", goal:"Saludar, despedirte y decir tu nombre",
+  vocab:[["Hello","jelóu","Hola"],["Hi","jái","Hola (informal)"],["Good morning","gud mórning","Buenos días"],["Good afternoon","gud afternún","Buenas tardes"],["Good night","gud náit","Buenas noches (al despedirse)"],["Goodbye / Bye","gudbái / bái","Adiós"],["Please","plis","Por favor"],["Thank you","zénk iu","Gracias"],["Yes / No","iés / nóu","Sí / No"],["My name is…","mái néim is","Me llamo…"],["What's your name?","uáts iór néim","¿Cómo te llamas?"],["Nice to meet you","náis tu mít iu","Mucho gusto"]],
+  grammar:{ title:"I am / You are",
+    lines:["En inglés, \"yo soy / yo estoy\" se dice I am, y \"tú eres / tú estás\" se dice You are. Es un solo verbo (be) que sirve para \"ser\" y para \"estar\".","Para preguntar, el verbo va primero: Are you Daniel? → ¿Tú eres Daniel?","Palabras de apoyo: from = de (origen) · happy = feliz · son = hijo."],
+    ex:[["I am Ana.","Yo soy Ana."],["I am from Colombia.","Yo soy de Colombia."],["You are my son.","Tú eres mi hijo."],["Are you Daniel?","¿Tú eres Daniel?"]] },
+  dialogue:[["Ana","Hello! Good morning."],["Carlos","Hi! Good morning."],["Ana","My name is Ana. What's your name?"],["Carlos","My name is Carlos."],["Ana","Nice to meet you, Carlos."],["Carlos","Nice to meet you too."],["Ana","Goodbye!"],["Carlos","Bye!"]],
+  fill:[["I ______ Ana.","am"],["You ______ Carlos.","are"],["I ______ from Colombia.","am"],["You ______ my son.","are"],["I ______ happy.","am"],["______ you Daniel?","are"]],
+  match:[["Good morning","Buenos días"],["Thank you","Gracias"],["Nice to meet you","Mucho gusto"],["Goodbye","Adiós"],["What's your name?","¿Cómo te llamas?"],["Please","Por favor"]],
+  paper:["Copia cada palabra del vocabulario 2 veces en tu cuaderno y léela en voz alta 3 veces (usa el botón 🔊 de la app para escucharla primero). Marca con una estrella las 3 más difíciles.","Escucha el diálogo en la app (primero sin leer, luego leyendo) y responde en tu cuaderno: 1) ¿Cómo se llama la señora? 2) ¿Qué responde Carlos a \"Nice to meet you\"? 3) ¿Cuántas expresiones del vocabulario encuentras en el diálogo?","Copia y completa en tu cuaderno las 6 frases de la práctica con am o are (sección Práctica de la app, pero escríbelas a mano).","Escribe tu primera presentación: Hello! / My name is ___ . / I am from ___ . / Nice to meet you! Léela en voz alta 5 veces.","Haz el ejercicio de unir columnas en papel, y graba una nota de voz diciendo tu presentación (sin leerla si puedes). Envíasela a tu profesor: es tu punto de partida, ¡guárdenla!"],
+  quiz:{ a:[["Buenos días","Good morning"],["Gracias","Thank you"],["Adiós","Goodbye"],["Mucho gusto","Nice to meet you"]],
+    b:{ lines:["A: ______ ! My name is Rosa. What's your ______ ?","B: My name is Pedro. ______ to meet you!"], bank:["Hello","name","Nice"], ans:["Hello","name","Nice"] },
+    c:[["I ______ Rosa.","am"],["You ______ my friend. (friend = amigo/a)","are"],["______ you Pedro?","Are"]] } },
+
+{ n:2, theme:"Información personal", goal:"Decir tu edad, de dónde eres y tu teléfono",
+  vocab:[["friend","frend","amigo / amiga"],["teacher","tícher","profesor(a)"],["student","stiúdent","estudiante"],["woman","úman","mujer"],["man","man","hombre"],["city","síti","ciudad"],["country","cántri","país"],["phone number","fóun námber","número de teléfono"],["How old are you?","jáu óuld ar iú","¿Cuántos años tienes?"],["I am … years old","ái am … íers óuld","Tengo … años"],["Where are you from?","uér ar iú from","¿De dónde eres?"],["He is / She is","jí is / shí is","Él es / Ella es"]],
+  grammar:{ title:"He is / She is + los números",
+    lines:["Para él y ella se usa is: He is my friend (Él es mi amigo). She is from Cali (Ella es de Cali).","Pregunta: Is she your teacher? → ¿Ella es tu profesora?","Números: 1 one (uán) · 2 two (tu) · 3 three (zri) · 4 four (for) · 5 five (fáiv) · 6 six (siks) · 7 seven (séven) · 8 eight (éit) · 9 nine (náin) · 10 ten (ten) · 11 eleven · 12 twelve · 13 thirteen · 15 fifteen · 20 twenty (tuénti) · 30 thirty · 40 forty · 50 fifty · 60 sixty · 70 seventy · 80 eighty · 90 ninety · 100 one hundred (uán jándred)."],
+    ex:[["She is my friend.","Ella es mi amiga."],["He is 70 years old.","Él tiene 70 años."],["I am from Bogotá.","Yo soy de Bogotá."],["Is she a teacher?","¿Ella es profesora?"]] },
+  dialogue:[["Rosa","Good afternoon!"],["Pedro","Good afternoon!"],["Rosa","Where are you from?"],["Pedro","I am from Bogotá. And you?"],["Rosa","I am from Cali. How old are you?"],["Pedro","I am 62 years old."],["Rosa","Marta is my friend. She is from Medellín."],["Pedro","Nice to meet you, Marta!"]],
+  fill:[["She ______ my friend.","is"],["I ______ from Cali.","am"],["He ______ 70 years old.","is"],["______ you from Bogotá?","are"],["My teacher ______ from Colombia.","is"],["You ______ a student.","are"]],
+  match:[["friend","amigo/a"],["teacher","profesor(a)"],["city","ciudad"],["woman","mujer"],["country","país"],["student","estudiante"]],
+  paper:["Copia el vocabulario 2 veces y escríbelo en voz alta con la app. Además, escribe los números del 1 al 20 en inglés.","Escucha el diálogo y responde en tu cuaderno: 1) ¿De dónde es Pedro? 2) ¿Cuántos años tiene? 3) ¿De dónde es Marta?","Copia y completa a mano las 6 frases de la práctica con am, is o are.","Escribe 4 frases sobre un amigo o amiga: su nombre, de dónde es, cuántos años tiene y algo más. (Ejemplo: She is my friend. Her… ¡usa lo que sabes!)","Haz el ejercicio de unir columnas en papel y graba un audio diciendo tu edad, tu ciudad y tu número de teléfono en inglés."],
+  quiz:{ a:[["amigo","friend"],["profesor","teacher"],["ciudad","city"],["¿De dónde eres?","Where are you from?"]],
+    b:{ lines:["A: How old ______ you?","B: I ______ 65 years old.","A: She ______ my friend."], bank:["am","is","are"], ans:["are","am","is"] },
+    c:[["Escribe el número 15 en inglés:","fifteen"],["Escribe el número 40 en inglés:","forty"],["Escribe el número 100 en inglés:","one hundred"]] } },
+
+{ n:3, theme:"La familia", goal:"Presentar a tu familia",
+  vocab:[["mother (mom)","máder (mom)","mamá"],["father (dad)","fáder (dad)","papá"],["son","san","hijo"],["daughter","dóter","hija"],["brother","bráder","hermano"],["sister","síster","hermana"],["husband","jásband","esposo"],["wife","uáif","esposa"],["grandmother","gránmader","abuela"],["grandfather","gránfader","abuelo"],["parents","pérents","papás"],["family","fámili","familia"]],
+  grammar:{ title:"my, your, his, her + This is…",
+    lines:["Los posesivos: my = mi · your = tu · his = de él · her = de ella.","Para presentar a alguien: This is my son (Este es mi hijo). His name is Daniel (Él se llama Daniel).","Ojo: his va con hombre, her va con mujer, sin importar de quién sea la cosa."],
+    ex:[["This is my son.","Este es mi hijo."],["His name is Daniel.","Él se llama Daniel."],["This is my sister. Her name is Luz.","Esta es mi hermana. Ella se llama Luz."],["Is she your daughter?","¿Ella es tu hija?"]] },
+  dialogue:[["Gloria","Look! This is my family."],["Elena","Oh! Who is he?"],["Gloria","He is my husband. His name is Jorge."],["Elena","And who is she?"],["Gloria","She is my daughter. Her name is Paula."],["Elena","Is he your son?"],["Gloria","Yes! His name is Daniel. He is a student."],["Elena","What a nice family!"]],
+  fill:[["This is ______ son. (mi)","my"],["______ name is Daniel. (de él)","his"],["This is my sister. ______ name is Luz.","her"],["Is she ______ daughter? (tu)","your"],["______ husband is from Cali. (mi)","my"],["This is Ana. ______ family is big.","her"]],
+  match:[["mother","mamá"],["husband","esposo"],["daughter","hija"],["brother","hermano"],["grandmother","abuela"],["son","hijo"]],
+  paper:["Copia el vocabulario 2 veces, escuchándolo en la app. Marca las 3 palabras más difíciles.","Escucha el diálogo y responde: 1) ¿Cómo se llama el esposo de Gloria? 2) ¿Quién es Paula? 3) ¿Qué hace Daniel?","Copia y completa a mano las 6 frases con my, your, his o her.","Dibuja tu árbol genealógico (mínimo 6 personas) y escribe debajo de cada uno qué es en inglés: mother, son, sister…","Escribe 4 frases presentando a tu familia (This is my… His/Her name is…) y graba un audio presentando a 2 familiares."],
+  quiz:{ a:[["hermana","sister"],["esposo","husband"],["abuela","grandmother"],["hija","daughter"]],
+    b:{ lines:["This is ______ family. (mi)","This is my son. ______ name is Daniel.","This is my mother. ______ name is Rosa."], bank:["Her","my","His"], ans:["my","His","Her"] },
+    c:[["Escribe una frase presentando a tu mamá o a tu papá:","This is my mother / This is my father"],["Escribe una frase presentando a un hijo o hija:","This is my son / This is my daughter"],["Traduce: Él se llama Pedro.","His name is Pedro"]] } },
+
+{ n:4, theme:"Repaso 1 + Evaluación", goal:"Sostener una mini conversación de 1 minuto", review:true,
+  vocab:[], dialogue:[],
+  grammar:{ title:"Qué repasamos esta semana",
+    lines:["Esta semana no hay tema nuevo: se consolida todo lo de las semanas 1 a 3.","Verbo be: I am, You are, He/She is (y las preguntas: Are you…? Is she…?).","Posesivos: my, your, his, her.","Vocabulario: saludos, información personal, números y familia. Usa la pestaña Repaso de la app todos los días."],
+    ex:[["What's your name?","¿Cómo te llamas?"],["How old are you?","¿Cuántos años tienes?"],["Where are you from?","¿De dónde eres?"],["Who is he?","¿Quién es él?"]] },
+  fill:[["I ______ Gloria.","am"],["______ you from Bogotá?","are"],["She ______ my daughter.","is"],["This is my son. ______ name is Daniel.","his"],["______ name is Ana. (de ella)","her"],["You ______ my teacher.","are"]],
+  match:[["Good morning","Buenos días"],["How old are you?","¿Cuántos años tienes?"],["sister","hermana"],["country","país"],["Nice to meet you","Mucho gusto"],["husband","esposo"]],
+  paper:["Repasa en la pestaña Repaso de la app (10 min) y copia una vez las palabras que marques como difíciles.","Escribe tu presentación ampliada (6 frases): saludo, nombre, edad, ciudad, y presenta a 2 familiares.","Responde por escrito estas preguntas con frase completa: What's your name? · How old are you? · Where are you from? · Who is your favorite person? (favorite = favorita)","Ensaya en voz alta tu presentación 3 veces, y luego grábala. Compárenla con el audio de la semana 1: ¡escucha tu progreso!","Prepara la evaluación: tu profesor te hará una conversación de 1 minuto con las preguntas del día 3. Repasa con la app y descansa."],
+  evalGuide:["Conversación de 1 minuto: el profesor saluda, pregunta nombre, edad, origen, y pide presentar a un familiar.","Comparar el audio de esta semana con el de la semana 1 (¡celebrar la diferencia!).","Aplicar el Quiz 4 impreso y calificarlo en la clase."],
+  quiz:{ a:[["Buenas tardes","Good afternoon"],["estudiante","student"],["abuelo","grandfather"],["Tengo 60 años","I am 60 years old"]],
+    b:{ lines:["A: What's your ______ ?","B: My name is Rosa. I ______ from Cali.","A: ______ is my brother. His name is Luis."], bank:["This","name","am"], ans:["name","am","This"] },
+    c:[["Responde con frase completa: How old are you?","I am … years old"],["Responde: Where are you from?","I am from …"],["Presenta a alguien de tu familia:","This is my …"]] } },
+
+{ n:5, theme:"La casa y las cosas", goal:"Describir tu casa y decir dónde están las cosas",
+  vocab:[["house","jáus","casa"],["kitchen","kíchen","cocina"],["bedroom","bédrum","habitación"],["bathroom","bázrum","baño"],["living room","líving rum","sala"],["table","téibol","mesa"],["chair","cher","silla"],["bed","bed","cama"],["door","dor","puerta"],["window","uíndou","ventana"],["lamp","lamp","lámpara"],["television (TV)","telivíshon","televisor"]],
+  grammar:{ title:"There is / There are",
+    lines:["There is = hay (una cosa). There are = hay (varias cosas).","There is a table in the kitchen → Hay una mesa en la cocina. There are two bedrooms → Hay dos habitaciones.","Para ubicar: in = en/dentro · on = sobre · under = debajo. The TV is on the table → El televisor está sobre la mesa."],
+    ex:[["There is a lamp in my bedroom.","Hay una lámpara en mi habitación."],["There are three windows.","Hay tres ventanas."],["The TV is on the table.","El televisor está sobre la mesa."],["My house is small but nice.","Mi casa es pequeña pero bonita. (but = pero)"]] },
+  dialogue:[["Elena","Is your house big?"],["Gloria","No, my house is small but nice."],["Elena","How many bedrooms? (how many = cuántas)"],["Gloria","There are two bedrooms and one bathroom."],["Elena","And the kitchen?"],["Gloria","The kitchen is my favorite! There is a big table and four chairs."],["Elena","Is there a TV in the living room?"],["Gloria","Yes, there is. The TV is on a small table."]],
+  fill:[["There ______ a table in the kitchen.","is"],["There ______ two chairs.","are"],["There ______ a lamp in my bedroom.","is"],["There ______ three windows.","are"],["The TV is ______ the table. (sobre)","on"],["The shoes are ______ the bed. (debajo · shoes = zapatos)","under"]],
+  match:[["kitchen","cocina"],["bedroom","habitación"],["chair","silla"],["window","ventana"],["door","puerta"],["bed","cama"]],
+  paper:["Copia el vocabulario 2 veces escuchándolo en la app, y marca las 3 palabras más difíciles.","Escucha el diálogo y responde: 1) ¿La casa de Gloria es grande o pequeña? 2) ¿Cuántas habitaciones hay? 3) ¿Dónde está el televisor?","Copia y completa a mano las 6 frases con is, are, on o under.","Dibuja el plano de tu casa y escribe el nombre en inglés de cada espacio y de 5 objetos.","Escribe 5 frases con There is / There are sobre tu casa, y graba un audio describiendo tu sala."],
+  quiz:{ a:[["cocina","kitchen"],["silla","chair"],["ventana","window"],["habitación","bedroom"]],
+    b:{ lines:["______ is a table in the kitchen.","There ______ two beds.","The lamp is ______ the table. (sobre)"], bank:["are","on","There"], ans:["There","are","on"] },
+    c:[["Escribe una frase con There is sobre tu casa:","There is …"],["Escribe una frase con There are sobre tu casa:","There are …"],["Traduce: Hay dos puertas.","There are two doors"]] } },
+
+{ n:6, theme:"Mi rutina diaria", goal:"Contar qué haces en un día normal",
+  vocab:[["wake up","uéik ap","despertarse"],["get up","guét ap","levantarse"],["have breakfast","jav brékfast","desayunar"],["have lunch","jav lanch","almorzar"],["have dinner","jav díner","cenar / comer"],["cook","kuk","cocinar"],["work","uérk","trabajar"],["clean the house","klin de jáus","limpiar la casa"],["watch TV","uách tiví","ver televisión"],["go to bed","góu tu bed","acostarse"],["in the morning","in de mórning","en la mañana"],["at night","at náit","en la noche"]],
+  grammar:{ title:"Presente simple (I / you / we) + la hora",
+    lines:["Para hablar de tu rutina se usa el verbo tal cual: I cook (yo cocino), I work (yo trabajo). Negativo con don't: I don't work on Sundays (no trabajo los domingos).","La hora: at six o'clock = a las seis. I get up at six o'clock.","Días: Monday (lunes) · Tuesday (martes) · Wednesday (miércoles) · Thursday (jueves) · Friday (viernes) · Saturday (sábado) · Sunday (domingo). Se usa on: on Monday."],
+    ex:[["I get up at six o'clock.","Me levanto a las seis."],["I have breakfast with my family.","Desayuno con mi familia."],["I don't work on Sundays.","No trabajo los domingos."],["I watch TV at night.","Veo televisión en la noche."]] },
+  dialogue:[["Gloria","I get up at six o'clock in the morning."],["Elena","So early! (tan temprano)"],["Gloria","Yes! I have breakfast at seven and I clean the house."],["Elena","Do you cook every day? (every day = todos los días)"],["Gloria","Yes, I cook lunch at twelve o'clock."],["Elena","And at night?"],["Gloria","I watch TV with my family and I go to bed at ten."],["Elena","What a nice routine!"]],
+  fill:[["I ______ up at six o'clock. (me levanto)","get"],["I ______ breakfast at seven. (desayuno)","have"],["We ______ TV at night. (vemos)","watch"],["I ______ the house on Saturdays. (limpio)","clean"],["I don't ______ on Sundays. (trabajo)","work"],["I ______ to bed at ten. (me acuesto)","go"]],
+  match:[["Monday","lunes"],["Tuesday","martes"],["Wednesday","miércoles"],["Thursday","jueves"],["Friday","viernes"],["Sunday","domingo"]],
+  paper:["Copia el vocabulario 2 veces escuchándolo en la app, y escribe también los 7 días de la semana en inglés.","Escucha el diálogo y responde: 1) ¿A qué hora se levanta Gloria? 2) ¿Qué hace a las doce? 3) ¿A qué hora se acuesta?","Copia y completa a mano las 6 frases con el verbo correcto.","Escribe tu rutina de un día normal: 6 frases con su hora (I get up at… I have breakfast at…).","Haz el ejercicio de unir los días en papel, y graba un audio contando 3 cosas de tu rutina con su hora."],
+  quiz:{ a:[["desayunar","have breakfast"],["trabajar","work"],["lunes","Monday"],["en la noche","at night"]],
+    b:{ lines:["I get up ______ six o'clock.","I ______ TV at night.","I clean the house ______ Saturdays."], bank:["watch","on","at"], ans:["at","watch","on"] },
+    c:[["Escribe una frase: ¿a qué hora te levantas?","I get up at …"],["Escribe una frase: ¿qué haces en la mañana?","I … in the morning"],["Traduce: No trabajo los domingos.","I don't work on Sundays"]] } },
+
+{ n:7, theme:"La rutina de otros", goal:"Hablar de la rutina de otra persona",
+  vocab:[["lives","livs","vive"],["works","uérks","trabaja"],["studies","stádis","estudia"],["plays","pléis","juega"],["visits","vísits","visita"],["calls","kols","llama (por teléfono)"],["reads","rids","lee"],["listens to music","lísens tu miúsik","escucha música"],["goes shopping","góus shóping","va de compras"],["every day","évri déi","todos los días"],["on weekends","on uíkends","los fines de semana"],["with","uíz","con"]],
+  grammar:{ title:"Él / ella + verbo con -s",
+    lines:["Cuando hablas de él o ella, el verbo lleva -s: I work → She works. I live → He lives.","Algunos cambian un poquito: study → studies, watch → watches, go → goes.","Negativo con doesn't (y el verbo vuelve a su forma normal): She doesn't work on Sundays."],
+    ex:[["My son studies at the university.","Mi hijo estudia en la universidad."],["She lives in Bogotá.","Ella vive en Bogotá."],["He plays video games at night.","Él juega videojuegos en la noche."],["She doesn't work on Sundays.","Ella no trabaja los domingos."]] },
+  dialogue:[["Elena","Tell me about your son. (tell me = cuéntame)"],["Gloria","Daniel studies at the university. He likes computers!"],["Elena","Does he live with you?"],["Gloria","Yes, he lives with me. He studies every day."],["Elena","And on weekends?"],["Gloria","He plays video games and visits his grandmother."],["Elena","He calls her too?"],["Gloria","Yes, he calls her every Sunday. He is a good boy!"]],
+  fill:[["My son ______ at the university. (estudia)","studies"],["She ______ in Bogotá. (vive)","lives"],["He ______ TV every day. (ve)","watches"],["My sister ______ to music. (escucha)","listens"],["She ______ work on Sundays. (no trabaja)","doesn't"],["He ______ his grandmother on weekends. (visita)","visits"]],
+  match:[["works","trabaja"],["studies","estudia"],["reads","lee"],["plays","juega"],["visits","visita"],["goes shopping","va de compras"]],
+  paper:["Copia el vocabulario 2 veces escuchándolo en la app. Fíjate en la -s final al pronunciar.","Escucha el diálogo y responde: 1) ¿Dónde estudia Daniel? 2) ¿Qué hace los fines de semana? 3) ¿A quién llama los domingos?","Copia y completa a mano las 6 frases con el verbo en la forma correcta.","Escribe 6 frases sobre la rutina de tu hijo o de otro familiar (He studies… She works…). ¡Cuidado con la -s!","Haz el ejercicio de unir columnas en papel, y graba un audio contando la rutina de alguien de tu familia."],
+  quiz:{ a:[["vive","lives"],["estudia","studies"],["los fines de semana","on weekends"],["todos los días","every day"]],
+    b:{ lines:["My son ______ at the university.","She ______ in Cali.","He ______ his mother every day."], bank:["lives","calls","studies"], ans:["studies","lives","calls"] },
+    c:[["Escribe una frase sobre la rutina de tu hijo/a:","He/She …s …"],["Escribe una frase sobre otra persona de tu familia:","He/She …s …"],["Traduce: Ella no trabaja los domingos.","She doesn't work on Sundays"]] } },
+
+{ n:8, theme:"Repaso 2 + Evaluación", goal:"Conversar 2 minutos sobre tu vida diaria", review:true,
+  vocab:[], dialogue:[],
+  grammar:{ title:"Qué repasamos esta semana",
+    lines:["Se consolidan las semanas 5 a 7: la casa, tu rutina y la rutina de otros.","There is / There are para describir lugares.","Presente simple: I work / She works (¡la -s de él y ella!), don't / doesn't.","La hora (at six o'clock) y los días (on Monday). Usa la pestaña Repaso todos los días."],
+    ex:[["There are two bedrooms in my house.","Hay dos habitaciones en mi casa."],["I get up at six o'clock.","Me levanto a las seis."],["My son studies every day.","Mi hijo estudia todos los días."],["I don't work on Sundays.","No trabajo los domingos."]] },
+  fill:[["There ______ a TV in the living room.","is"],["There ______ four chairs.","are"],["I ______ breakfast at seven.","have"],["My son ______ at the university.","studies"],["She ______ in Bogotá.","lives"],["I don't ______ on Sundays.","work"]],
+  match:[["kitchen","cocina"],["get up","levantarse"],["works","trabaja"],["Thursday","jueves"],["under","debajo"],["goes shopping","va de compras"]],
+  paper:["Repasa en la pestaña Repaso (10 min) y copia una vez las palabras difíciles de las semanas 5 a 7.","Escribe un párrafo de 6 frases: describe tu casa (2 frases con there is/are) y tu rutina (4 frases con horas).","Escribe 4 frases sobre la rutina de un familiar (con la -s) y 2 frases negativas (don't / doesn't).","Ensaya en voz alta: describe tu casa y tu día. Grábate 1 minuto y escúchate.","Prepara la evaluación: conversación de 2 minutos con tu profesor sobre tu casa y tu rutina. Repasa y descansa."],
+  evalGuide:["Conversación de 2 minutos: la casa (Is your house big? How many bedrooms?), la rutina (What time do you get up? What do you do in the morning?) y la rutina del hijo.","Revisar la hoja de errores recurrentes de las semanas 5–7 y repasarlos juntos.","Aplicar el Quiz 8 impreso y calificarlo en la clase."],
+  quiz:{ a:[["baño","bathroom"],["cocinar","cook"],["miércoles","Wednesday"],["Hay dos camas","There are two beds"]],
+    b:{ lines:["I get up ______ six o'clock.","There ______ a big kitchen in my house.","My daughter ______ in Medellín."], bank:["is","lives","at"], ans:["at","is","lives"] },
+    c:[["Escribe qué haces en la mañana (1 frase):","I … in the morning"],["Escribe una frase sobre tu casa:","There is/are …"],["Escribe qué hace tu hijo/a todos los días:","He/She …s every day"]] } },
+
+{ n:9, theme:"Gustos y comida", goal:"Decir qué te gusta y qué no",
+  vocab:[["coffee","kófi","café"],["bread","bred","pan"],["rice","ráis","arroz"],["chicken","chíken","pollo"],["meat","mit","carne"],["fish","fish","pescado"],["fruit","frut","fruta"],["vegetables","véyetabols","verduras"],["water","uóter","agua"],["juice","yus","jugo"],["eggs","egs","huevos"],["soup","sup","sopa"]],
+  grammar:{ title:"like / love / don't like",
+    lines:["I like coffee = me gusta el café. I love coffee = me encanta el café. I don't like soup = no me gusta la sopa.","Pregunta con Do: Do you like fish? → Sí: Yes, I do. · No: No, I don't.","Para él/ella: She likes juice. He doesn't like vegetables."],
+    ex:[["I love Colombian coffee.","Me encanta el café colombiano."],["I don't like soup.","No me gusta la sopa."],["Do you like fish?","¿Te gusta el pescado?"],["Yes, I do! / No, I don't.","¡Sí! / No."]] },
+  dialogue:[["Elena","Do you like coffee?"],["Gloria","I love coffee! I drink coffee every morning. (drink = tomar)"],["Elena","And do you like fish?"],["Gloria","No, I don't. But I like chicken and rice."],["Elena","Me too! Do you cook soup?"],["Gloria","Yes, but my son doesn't like soup."],["Elena","Ha! My daughter doesn't like vegetables."],["Gloria","Children! (¡los hijos!)"]],
+  fill:[["______ you like fish?","do"],["No, I ______ .","don't"],["I ______ coffee. (me encanta)","love"],["I don't ______ soup. (gustar)","like"],["My son ______ like vegetables. (no le gustan)","doesn't"],["Yes, I ______ .","do"]],
+  match:[["chicken","pollo"],["rice","arroz"],["vegetables","verduras"],["juice","jugo"],["eggs","huevos"],["meat","carne"]],
+  paper:["Copia el vocabulario 2 veces escuchándolo en la app y marca las 3 palabras más difíciles.","Escucha el diálogo y responde: 1) ¿Qué le encanta a Gloria? 2) ¿Le gusta el pescado? 3) ¿Qué no le gusta al hijo?","Copia y completa a mano las 6 frases con do, don't, doesn't, like o love.","Escribe dos listas: \"I like…\" (5 cosas) y \"I don't like…\" (3 cosas). Pueden ser comidas o actividades.","Escribe en inglés el menú de un almuerzo colombiano (4 cosas), y graba un audio diciendo 4 gustos tuyos."],
+  quiz:{ a:[["pollo","chicken"],["verduras","vegetables"],["jugo","juice"],["Me encanta el café","I love coffee"]],
+    b:{ lines:["______ you like fish?","Yes, I ______ .","My son ______ like soup."], bank:["doesn't","Do","do"], ans:["Do","do","doesn't"] },
+    c:[["Escribe algo que te gusta:","I like …"],["Escribe algo que no te gusta:","I don't like …"],["Traduce: ¿Te gusta el arroz?","Do you like rice?"]] } },
+
+{ n:10, theme:"Habilidades", goal:"Decir qué sabes hacer y qué no",
+  vocab:[["dance","dans","bailar"],["sing","sing","cantar"],["swim","suím","nadar"],["drive","dráiv","conducir"],["speak English","spik ínglish","hablar inglés"],["use the computer","iús de compiúter","usar el computador"],["ride a bicycle","ráid a báisikol","montar bicicleta"],["sew","sóu","coser"],["paint","péint","pintar"],["play the guitar","pléi de guitár","tocar guitarra"],["very well","véri uél","muy bien"],["a little","a lítel","un poquito"]],
+  grammar:{ title:"can / can't",
+    lines:["can = poder / saber hacer algo: I can cook (sé cocinar). can't = no poder: I can't swim (no sé nadar).","El verbo nunca cambia: She can dance (sin -s).","Pregunta: Can you drive? → Yes, I can. / No, I can't."],
+    ex:[["I can cook very well.","Sé cocinar muy bien."],["I can't swim.","No sé nadar."],["Can you drive?","¿Sabes conducir?"],["I can speak English a little!","¡Puedo hablar inglés un poquito!"]] },
+  dialogue:[["Elena","Can you dance salsa?"],["Gloria","Yes, I can! I dance very well."],["Elena","Wow! Can you sing?"],["Gloria","No, I can't sing. But I can cook very well."],["Elena","I know! Your soup is delicious. (delicious = deliciosa)"],["Gloria","And now I can speak English a little!"],["Elena","Yes, you can! Your son is a good teacher."],["Gloria","He is the best! (el mejor)"]],
+  fill:[["I ______ cook very well. (sé)","can"],["I ______ swim. (no sé)","can't"],["______ you drive?","can"],["Yes, I ______ .","can"],["My son ______ speak English. (puede)","can"],["I can dance ______ . (un poquito)","a little"]],
+  match:[["dance","bailar"],["swim","nadar"],["drive","conducir"],["sew","coser"],["sing","cantar"],["paint","pintar"]],
+  paper:["Copia el vocabulario 2 veces escuchándolo en la app y marca las 3 palabras más difíciles.","Escucha el diálogo y responde: 1) ¿Qué sabe hacer muy bien Gloria? 2) ¿Qué no sabe hacer? 3) ¿Qué puede hacer ahora un poquito?","Copia y completa a mano las 6 frases con can, can't o a little.","Entrevista en papel a un familiar: escribe 5 preguntas Can you…? y anota sus respuestas (Yes, he can / No, she can't).","Escribe 5 frases sobre ti con can / can't, y graba un audio diciendo 3 cosas que sabes hacer."],
+  quiz:{ a:[["bailar","dance"],["nadar","swim"],["muy bien","very well"],["No sé conducir","I can't drive"]],
+    b:{ lines:["______ you sing?","No, I ______ .","But I ______ dance very well!"], bank:["can't","can","Can"], ans:["Can","can't","can"] },
+    c:[["Escribe algo que sabes hacer:","I can …"],["Escribe algo que no sabes hacer:","I can't …"],["Traduce: ¿Sabes cocinar?","Can you cook?"]] } },
+
+{ n:11, theme:"Describir personas y lugares", goal:"Describir cómo es alguien o algún lugar",
+  vocab:[["tall","tol","alto(a)"],["short","short","bajo(a)"],["young","iáng","joven"],["old","óuld","viejo(a) / mayor"],["pretty","príti","bonita"],["handsome","jánsom","guapo"],["kind","káind","amable"],["funny","fáni","divertido(a)"],["serious","sírios","serio(a)"],["hardworking","járd-uerking","trabajador(a)"],["big","big","grande"],["small","smol","pequeño(a)"]],
+  grammar:{ title:"be + adjetivo",
+    lines:["Para describir se usa be + adjetivo: My son is tall (mi hijo es alto). She is very kind (ella es muy amable).","El adjetivo no cambia: nunca lleva -s ni femenino. They are tall (ellos/ellas son altos/altas).","Si va antes del sustantivo, primero el adjetivo: a big house (una casa grande). Colores útiles: red (rojo) · blue (azul) · green (verde) · white (blanco) · black (negro) · yellow (amarillo)."],
+    ex:[["My son is tall and hardworking.","Mi hijo es alto y trabajador."],["My grandmother is old but very funny.","Mi abuela es mayor pero muy divertida."],["Bogotá is a big city.","Bogotá es una ciudad grande."],["My house is small and white.","Mi casa es pequeña y blanca."]] },
+  dialogue:[["Elena","Tell me about your family!"],["Gloria","My husband is tall and serious. But he is very kind."],["Elena","And your son?"],["Gloria","Daniel is young and hardworking. He is funny too!"],["Elena","Is your house big?"],["Gloria","No, my house is small, but it is pretty."],["Elena","Your city is pretty too."],["Gloria","Yes! Bogotá is a big and beautiful city. (beautiful = hermosa)"]],
+  fill:[["My son ______ tall. (es)","is"],["The house is ______ . (grande)","big"],["She is very ______ . (amable)","kind"],["My grandmother is old but very ______ . (divertida)","funny"],["Daniel is young and ______ . (trabajador)","hardworking"],["Bogotá is a ______ city. (grande)","big"]],
+  match:[["tall","alto"],["kind","amable"],["funny","divertido"],["young","joven"],["hardworking","trabajador"],["small","pequeño"]],
+  paper:["Copia el vocabulario 2 veces escuchándolo en la app, y también los 6 colores de la gramática.","Escucha el diálogo y responde: 1) ¿Cómo es el esposo de Gloria? 2) ¿Cómo es Daniel? 3) ¿Cómo es la casa?","Copia y completa a mano las 6 frases con el adjetivo o el verbo correcto.","Describe a 2 familiares por escrito: 4 frases cada uno (cómo es físicamente y cómo es su personalidad).","Escribe 4 frases describiendo tu casa o tu barrio (barrio = neighborhood), y graba un audio describiendo a alguien que quieres."],
+  quiz:{ a:[["alto","tall"],["amable","kind"],["joven","young"],["una ciudad grande","a big city"]],
+    b:{ lines:["My son is ______ . (trabajador)","My house is small but ______ . (bonita)","My grandmother is very ______ . (divertida)"], bank:["funny","pretty","hardworking"], ans:["hardworking","pretty","funny"] },
+    c:[["Describe a tu hijo/a (1 frase):","He/She is …"],["Describe tu casa (1 frase):","My house is …"],["Traduce: Ella es amable y divertida.","She is kind and funny"]] } },
+
+{ n:12, theme:"Repaso final + Graduación", goal:"Presentarte hablando 3 minutos sobre ti", review:true,
+  vocab:[], dialogue:[],
+  grammar:{ title:"Tu presentación de 3 minutos",
+    lines:["Esta semana preparas tu presentación final. La estructura (escríbela en papel y ensáyala):","1) Saludo y nombre · 2) Edad y ciudad · 3) Tu familia (3 personas) · 4) Tu casa (there is/are) · 5) Tu rutina (3 frases con horas) · 6) Tus gustos (like / don't like) · 7) Qué sabes hacer (can) · 8) Despedida.","No tiene que ser perfecta: tiene que ser TUYA y entenderse. ¡Llevas 12 semanas, esto ya lo sabes!"],
+    ex:[["Hello! My name is Gloria and I am from Bogotá.","¡Hola! Me llamo Gloria y soy de Bogotá."],["There are two bedrooms in my house.","Hay dos habitaciones en mi casa."],["I love coffee and I can cook very well.","Me encanta el café y sé cocinar muy bien."],["Thank you for listening!","¡Gracias por escuchar! (for listening = por escuchar)"]] },
+  fill:[["My name ______ Gloria.","is"],["There ______ two bedrooms in my house.","are"],["I ______ up at six o'clock.","get"],["My son ______ at the university.","studies"],["I ______ coffee. (me encanta)","love"],["I ______ cook very well. (sé)","can"]],
+  match:[["I am 60 years old","Tengo 60 años"],["There is a big kitchen","Hay una cocina grande"],["She works every day","Ella trabaja todos los días"],["I don't like fish","No me gusta el pescado"],["I can dance","Sé bailar"],["He is hardworking","Él es trabajador"]],
+  paper:["Escribe el borrador de tu presentación final siguiendo la estructura de 8 partes (mínimo 15 frases). Tu profesor te lo corrige antes del viernes.","Repasa en la pestaña Repaso (15 min) y pasa en limpio tu presentación con las correcciones.","Ensaya tu presentación en voz alta 3 veces leyendo. Marca las palabras que te cuesta pronunciar y practícalas con la app.","Ensaya 2 veces SIN leer (puedes mirar solo los títulos de las 8 partes). Grábate una vez y escúchate.","Día de graduación: presenta tus 3 minutos a tu profesor (¡y a la familia si quieres público!). Luego comparen este audio con el de la semana 1. Quiz final y… ¡a celebrar! 🎉"],
+  evalGuide:["Presentación oral de 3 minutos con la estructura de 8 partes. Calificar con la rúbrica: se entiende (2,0) + vocabulario variado (1,5) + estructuras del curso (1,5).","Escuchar juntos el audio de la semana 1 y el de hoy. Ese contraste ES el diploma.","Aplicar el Quiz 12 impreso. Entregar algo simbólico de graduación y contarle qué viene en el Bloque 2."],
+  quiz:{ a:[["Mucho gusto","Nice to meet you"],["Hay dos sillas","There are two chairs"],["Mi hijo estudia","My son studies"],["Sé cocinar","I can cook"]],
+    b:{ lines:["I get up ______ six o'clock.","My son ______ video games at night.","I ______ like soup, but I love coffee."], bank:["plays","don't","at"], ans:["at","plays","don't"] },
+    c:[["Escribe 2 frases sobre tu familia:","(respuesta libre con my/his/her)"],["Escribe 2 frases sobre tus gustos:","I like… / I don't like…"],["Escribe 1 frase con can y 1 con can't:","I can… / I can't…"]] } }
+];
+
+// ============ MAPA · BLOQUES 2 y 3 (se generan al avanzar) ============
+const ROADMAP = {
+  b2:{ name:"Bloque 2 · Básico alto (A2)", weeks:[
+    [13,"¿Qué estás haciendo?","Presente continuo (I am cooking)"],
+    [14,"Lugares de la ciudad","Direcciones: turn left, go straight"],
+    [15,"De compras","How much…?, dinero, this/these"],
+    [16,"Repaso 3 + evaluación","Conversación: la ciudad y compras"],
+    [17,"Ayer (parte 1)","Pasado de be: was / were"],
+    [18,"Ayer (parte 2)","Pasado regular: worked, cooked"],
+    [19,"Historias del pasado","Irregulares: went, had, saw"],
+    [20,"Repaso 4 + evaluación","Contar tu fin de semana en pasado"],
+    [21,"La salud","Me duele…: I have a headache, should"],
+    [22,"Comparar","Comparativos: bigger, better"],
+    [23,"El clima y la ropa","It's raining, ropa, superlativos"],
+    [24,"Repaso 5 + evaluación","Conversación de 4 minutos"]]},
+  b3:{ name:"Bloque 3 · Nivel medio (B1)", weeks:[
+    [25,"Planes","going to: voy a viajar"],
+    [26,"El futuro","will: predicciones y promesas"],
+    [27,"Experiencias","Presente perfecto: I have visited…"],
+    [28,"Repaso 6 + evaluación","Hablar de planes y experiencias"],
+    [29,"Consejos y obligaciones","should, have to, must"],
+    [30,"Si pasa esto…","Primer condicional: If it rains…"],
+    [31,"Conectar ideas","because, so, but, when"],
+    [32,"Repaso 7 + evaluación","Mini historia de 5 minutos"],
+    [33,"Opiniones","I think that…, agree / disagree"],
+    [34,"Por teléfono y mensajes","Llamadas, citas, WhatsApp en inglés"],
+    [35,"Conversación libre","Estrategias: pedir repetición, parafrasear"],
+    [36,"Graduación final","Conversación abierta de 10 minutos 🎓"]]}
+};
+// ============ ESTADO ============
+const KEY = "inglesEnCasaV1";
+const DEF = { week:1, completed:{}, streakCount:0, streakLast:null, srs:{}, grades:{}, teacher:false, introSeen:false };
+let S = load();
+function load(){ try{ const r = localStorage.getItem(KEY); return r ? Object.assign({}, DEF, JSON.parse(r)) : Object.assign({}, DEF); }catch(e){ return Object.assign({}, DEF); } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){ /* modo sin guardado */ } }
+const todayStr = () => new Date().toISOString().slice(0,10);
+function addDays(n){ const d = new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+const W = () => WEEKS[S.week-1];
+
+// ============ AUDIO (voz en inglés) ============
+let VOICES = [];
+function loadVoices(){ VOICES = speechSynthesis.getVoices().filter(v => v.lang && v.lang.toLowerCase().startsWith("en")); }
+if ("speechSynthesis" in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function speak(text, slow){
+  if (!("speechSynthesis" in window)){ alert("Tu navegador no tiene voz en inglés. Pídele a tu profesor que te grabe el audio."); return; }
+  const u = new SpeechSynthesisUtterance(text.replace(/…/g, ""));
+  u.lang = "en-US"; u.rate = slow ? 0.62 : 0.85;
+  const v = VOICES.find(x => /en[-_]US/i.test(x.lang)) || VOICES[0];
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+function playDialogue(lines, slow){ speechSynthesis.cancel(); lines.forEach(l => speak(l[1], slow)); }
+
+// ============ UTILIDADES ============
+const view = document.getElementById("view");
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+function norm(s){ return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[.,!?'']/g,"").replace(/\s+/g," ").trim(); }
+function okAnswer(input, ans){ const i = norm(input); return ans.split("/").some(a => norm(a) === i); }
+function seededShuffle(arr, seed){
+  const a = arr.slice(); let s = seed * 9301 + 49297;
+  for (let i = a.length-1; i > 0; i--){ s = (s * 9301 + 49297) % 233280; const j = Math.floor((s/233280) * (i+1)); [a[i],a[j]] = [a[j],a[i]]; }
+  return a;
+}
+const LETTERS = "abcdefghij";
+
+// ============ NAVEGACIÓN ============
+let TAB = "hoy";
+document.querySelectorAll(".tabbar button").forEach(b => b.addEventListener("click", () => {
+  TAB = b.dataset.tab;
+  document.querySelectorAll(".tabbar button").forEach(x => x.classList.toggle("active", x === b));
+  render();
+  window.scrollTo(0,0);
+}));
+function goTab(t, anchor){
+  TAB = t;
+  document.querySelectorAll(".tabbar button").forEach(x => x.classList.toggle("active", x.dataset.tab === t));
+  render();
+  if (anchor){ const e = document.getElementById(anchor); if (e) e.scrollIntoView({behavior:"smooth"}); }
+}
+function render(){
+  if (TAB === "hoy") renderHoy();
+  else if (TAB === "semana") renderSemana();
+  else if (TAB === "repaso") renderRepaso();
+  else if (TAB === "plan") renderPlan();
+  else renderProgreso();
+}
+
+// ============ HOY ============
+const DAYNAMES = ["Lunes","Martes","Miércoles","Jueves","Viernes"];
+const DAYPLAN = [
+  ["Vocabulario nuevo","Estudia las palabras de la semana con el audio 🔊 (10 min).","vocab"],
+  ["Escucha","Escucha el diálogo: primero sin leer, luego leyendo (10 min).","dialogo"],
+  ["Gramática","Lee la mini lección y mira los ejemplos con audio (10 min).","gramatica"],
+  ["Escritura","Repasa el vocabulario 5 minutos antes de escribir.","vocab"],
+  ["Repaso","Haz la práctica interactiva y la pestaña Repaso (10 min).","practica"]
+];
+function dayIndex(){ const d = new Date().getDay(); return (d >= 1 && d <= 5) ? d-1 : 5; }
+function renderHoy(){
+  const w = W(); const di = dayIndex();
+  let h = "";
+  if (!S.introSeen){
+    h += `<div class="card"><h2>¡Bienvenida! 👋</h2>
+      <p>Así funciona tu curso, en 3 pasos:</p>
+      <ul class="simple">
+        <li><b>Cada día (lunes a viernes):</b> 10–15 min en la app + una tarea corta en tu cuaderno.</li>
+        <li><b>El fin de semana:</b> clase con tu profesor, quiz y nueva semana.</li>
+        <li><b>Tu meta:</b> no la perfección, sino no saltarte días. ⭐</li>
+      </ul>
+      <div class="btnrow"><button class="btn" id="introOk">¡Entendido, empecemos!</button></div></div>`;
+  }
+  if (di <= 4){
+    const dp = DAYPLAN[di]; const done = !!S.completed[S.week + "-" + di];
+    h += `<div class="cuaderno">
+      <div class="eyebrow">Semana ${w.n} · ${esc(w.theme)}</div>
+      <h2>${DAYNAMES[di]}: ${dp[0]}</h2>
+      <p class="meta">Meta de la semana: ${esc(w.goal)}.</p>
+      <p><b>📱 En la app:</b> ${dp[1]}</p>
+      <p style="margin-top:8px"><b>✏️ En tu cuaderno:</b> ${esc(w.paper[di])}</p>
+      <div class="btnrow">
+        <button class="btn ghost" id="goSec">Abrir en la app</button>
+        <button class="btn ${done ? "done" : ""}" id="markDone">${done ? "✓ Día completado" : "Marcar día completado"}</button>
+      </div></div>`;
+  } else {
+    const done = !!S.completed[S.week + "-w"];
+    h += `<div class="cuaderno">
+      <div class="eyebrow">Semana ${w.n} · ${esc(w.theme)}</div>
+      <h2>Fin de semana: clase con tu profesor 🍎</h2>
+      <p class="meta">Meta de la semana: ${esc(w.goal)}.</p>
+      <ul class="simple">
+        <li>Entrega tus tareas del cuaderno para que las califique.</li>
+        <li>Conversan, repasan los errores y haces el quiz de la semana.</li>
+        <li>Al final, pasan a la semana siguiente desde la pestaña Plan.</li>
+      </ul>
+      <div class="btnrow">
+        <button class="btn ghost" id="goSemana">Repasar la semana</button>
+        <button class="btn ${done ? "done" : ""}" id="markDone">${done ? "✓ Clase completada" : "Marcar clase completada"}</button>
+      </div></div>`;
+  }
+  const due = srsDue().length;
+  h += `<div class="card"><h2>🔁 Repaso rápido</h2>
+    <p>${due ? "Tienes <b>" + due + "</b> palabra" + (due > 1 ? "s" : "") + " para repasar hoy. ¡Son 3 minutos!" : "¡Estás al día con el repaso! 🎉 Vuelve mañana."}</p>
+    ${due ? '<div class="btnrow"><button class="btn small" id="goRepaso">Repasar ahora</button></div>' : ""}</div>`;
+  h += `<div class="card"><div class="statgrid">
+    <div><div class="num">🔥 ${S.streakCount}</div><div class="lbl">días seguidos</div></div>
+    <div><div class="num">${Object.keys(S.completed).length}</div><div class="lbl">sesiones hechas</div></div>
+    <div><div class="num stars">${"⭐".repeat(Math.min(5, countWeekends())) || "—"}</div><div class="lbl">semanas con clase</div></div>
+  </div></div>`;
+  view.innerHTML = h;
+  const intro = document.getElementById("introOk");
+  if (intro) intro.onclick = () => { S.introSeen = true; save(); render(); };
+  const md = document.getElementById("markDone");
+  if (md) md.onclick = () => { toggleDone(di <= 4 ? String(di) : "w"); };
+  const gs = document.getElementById("goSec");
+  if (gs) gs.onclick = () => goTab("semana", "sec-" + DAYPLAN[di][2]);
+  const gw = document.getElementById("goSemana");
+  if (gw) gw.onclick = () => goTab("semana");
+  const gr = document.getElementById("goRepaso");
+  if (gr) gr.onclick = () => goTab("repaso");
+}
+function countWeekends(){ return Object.keys(S.completed).filter(k => k.endsWith("-w")).length; }
+function toggleDone(dkey){
+  const k = S.week + "-" + dkey;
+  if (S.completed[k]){ delete S.completed[k]; }
+  else {
+    S.completed[k] = todayStr();
+    const t = todayStr();
+    if (S.streakLast !== t){
+      S.streakCount = (S.streakLast === addDays(-1)) ? S.streakCount + 1 : 1;
+      S.streakLast = t;
+    }
+  }
+  save(); render();
+}
+
+// ============ SEMANA ============
+function renderSemana(){
+  const w = W();
+  let h = `<div class="card" style="display:flex;align-items:center;gap:10px;justify-content:space-between">
+    <button class="btn small ghost" id="wPrev" ${S.week === 1 ? "disabled" : ""}>←</button>
+    <div style="text-align:center"><b>Semana ${w.n}</b> ${w.review ? '<span class="badge rev">repaso</span>' : ""}<br><span class="hint">${esc(w.theme)}</span></div>
+    <button class="btn small ghost" id="wNext" ${S.week === 12 ? "disabled" : ""}>→</button></div>`;
+
+  if (w.vocab.length){
+    h += `<div class="card" id="sec-vocab"><h2>📖 Vocabulario</h2><table class="tbl">
+      <tr><th>Inglés</th><th>Suena como</th><th>Español</th><th></th></tr>`;
+    w.vocab.forEach((v,i) => {
+      h += `<tr><td class="en">${esc(v[0])}</td><td class="pr">${esc(v[1])}</td><td>${esc(v[2])}</td>
+        <td style="white-space:nowrap"><button class="speak" data-say="${esc(v[0])}">🔊</button> <button class="speak" data-say="${esc(v[0])}" data-slow="1">🐢</button></td></tr>`;
+    });
+    h += `</table><p class="hint" style="margin-top:8px">🐢 = más despacio. La columna "suena como" es una ayuda temporal: poco a poco confía más en tu oído.</p></div>`;
+  }
+
+  if (w.dialogue.length){
+    h += `<div class="card" id="sec-dialogo"><h2>🎧 Diálogo de la semana</h2>
+      <div class="btnrow" style="margin-top:4px;margin-bottom:6px">
+        <button class="btn small" id="dlgPlay">▶ Escuchar todo</button>
+        <button class="btn small ghost" id="dlgSlow">🐢 Despacio</button>
+      </div><div class="dialogo">`;
+    w.dialogue.forEach(l => {
+      h += `<div class="ln"><span class="who">${esc(l[0])}:</span><span style="flex:1">${esc(l[1])}</span><button class="speak" data-say="${esc(l[1])}" data-slow="1">🔊</button></div>`;
+    });
+    h += `</div><p class="hint">Primero escúchalo sin leer. Luego léelo mientras escuchas. Al final, repite cada línea en voz alta.</p></div>`;
+  }
+
+  h += `<div class="card" id="sec-gramatica"><h2>✏️ ${w.review ? "Repaso" : "Gramática"}: ${esc(w.grammar.title)}</h2>`;
+  w.grammar.lines.forEach(l => h += `<p style="margin:7px 0">${esc(l)}</p>`);
+  h += `<h3>Ejemplos</h3>`;
+  w.grammar.ex.forEach(e => {
+    h += `<div class="ln" style="display:flex;gap:8px;align-items:center;padding:5px 0;border-bottom:1px dashed var(--line)">
+      <span style="flex:1"><b>${esc(e[0])}</b><br><span class="hint">${esc(e[1])}</span></span>
+      <button class="speak" data-say="${esc(e[0])}">🔊</button></div>`;
+  });
+  h += `</div>`;
+
+  if (w.review && w.evalGuide){
+    h += `<div class="card"><h2>🎤 La evaluación de esta semana</h2><ul class="simple">`;
+    w.evalGuide.forEach(g => h += `<li>${esc(g)}</li>`);
+    h += `</ul></div>`;
+  }
+
+  h += `<div class="card" id="sec-practica"><h2>🧩 Práctica interactiva</h2>
+    <p class="hint">Esto es para practicar tú sola: se corrige solo y no cuenta para la nota. Lo que califica tu profesor es lo del cuaderno.</p>
+    <h3>Completa la frase</h3><div id="fillBox">`;
+  w.fill.forEach((f,i) => {
+    const parts = f[0].split("______");
+    h += `<div class="fill-item" data-a="${esc(f[1])}">${esc(parts[0])}<input type="text" autocapitalize="none" autocomplete="off">${esc(parts[1] || "")}<span class="sol"></span></div>`;
+  });
+  h += `</div><div class="btnrow"><button class="btn small" id="fillCheck">Revisar mis respuestas</button></div>
+    <h3>Une las parejas</h3><p class="hint">Toca una palabra en inglés y luego su pareja en español.</p>
+    <div class="match-grid" id="matchBox"></div></div>`;
+
+  h += `<div class="card" id="sec-papel"><h2>📝 Tareas en el cuaderno</h2><ul class="simple">`;
+  w.paper.forEach((t,i) => h += `<li><b>${i <= 4 ? DAYNAMES[i] : ""}:</b> ${esc(t)}</li>`);
+  h += `</ul><hr class="divider"><p class="hint">¿Prefieres las tareas impresas? Imprime la hoja de la semana (la hoja del profesor trae el quiz y las respuestas).</p>
+    <div class="btnrow">
+      <button class="btn ghost" id="printStu">🖨️ Hoja de la semana</button>
+      <button class="btn red" id="printTea">🖨️ Hoja del profesor</button>
+    </div></div>`;
+
+  view.innerHTML = h;
+  document.getElementById("wPrev").onclick = () => { S.week--; save(); render(); window.scrollTo(0,0); };
+  document.getElementById("wNext").onclick = () => { S.week++; save(); render(); window.scrollTo(0,0); };
+  view.querySelectorAll(".speak").forEach(b => b.onclick = () => speak(b.dataset.say, !!b.dataset.slow));
+  const dp = document.getElementById("dlgPlay"); if (dp) dp.onclick = () => playDialogue(w.dialogue, false);
+  const ds = document.getElementById("dlgSlow"); if (ds) ds.onclick = () => playDialogue(w.dialogue, true);
+  document.getElementById("fillCheck").onclick = () => {
+    view.querySelectorAll(".fill-item").forEach(it => {
+      const good = okAnswer(it.querySelector("input").value, it.dataset.a);
+      it.classList.toggle("good", good); it.classList.toggle("bad", !good);
+      it.querySelector(".sol").textContent = good ? "✓" : "→ " + it.dataset.a.split("/")[0];
+    });
+  };
+  buildMatch(w);
+  document.getElementById("printStu").onclick = () => printSheet(w, false);
+  document.getElementById("printTea").onclick = () => printSheet(w, true);
+}
+function buildMatch(w){
+  const box = document.getElementById("matchBox");
+  const left = w.match.map((p,i) => ({t:p[0], k:i}));
+  const right = seededShuffle(w.match.map((p,i) => ({t:p[1], k:i})), w.n * 7 + 3);
+  let sel = null;
+  box.innerHTML = "";
+  const rows = Math.max(left.length, right.length);
+  for (let i = 0; i < rows; i++){
+    [left[i], right[i]].forEach((item, side) => {
+      const b = document.createElement("button");
+      b.textContent = item.t;
+      b.onclick = () => {
+        if (b.classList.contains("hit")) return;
+        if (sel && sel.side === side){ sel.btn.classList.remove("sel"); sel = {side, k:item.k, btn:b}; b.classList.add("sel"); return; }
+        if (!sel){ sel = {side, k:item.k, btn:b}; b.classList.add("sel"); return; }
+        if (sel.k === item.k){ b.classList.add("hit"); sel.btn.classList.remove("sel"); sel.btn.classList.add("hit"); speak(w.match[item.k][0], false); sel = null; }
+        else { sel.btn.classList.remove("sel"); sel = null; }
+      };
+      box.appendChild(b);
+    });
+  }
+}
+
+// ============ REPASO (repetición espaciada) ============
+const INTERVALS = [1, 2, 4, 7, 15, 30];
+function allVocab(){
+  const out = [];
+  WEEKS.forEach(w => { if (w.n <= S.week) w.vocab.forEach(v => out.push({id:"w" + w.n + "|" + v[0], en:v[0], pr:v[1], es:v[2]})); });
+  return out;
+}
+function srsDue(){
+  const t = todayStr();
+  return allVocab().filter(v => { const e = S.srs[v.id]; return !e || e.due <= t; });
+}
+function renderRepaso(){
+  const due = srsDue().slice(0, 20);
+  if (!due.length){
+    view.innerHTML = `<div class="card"><h2>🔁 Repaso del día</h2><p>¡Estás al día! 🎉 Las palabras volverán a aparecer justo cuando estés a punto de olvidarlas: así funciona la memoria.</p><p class="hint">Vuelve mañana, o adelanta estudiando la semana en la pestaña Semana.</p></div>`;
+    return;
+  }
+  let idx = 0, shown = false, done = 0;
+  function paint(){
+    const c = due[idx];
+    view.innerHTML = `<div class="card"><h2>🔁 Repaso del día</h2><p class="hint">${due.length - done} por repasar · Lee la palabra en español y trata de recordarla en inglés antes de mostrarla.</p></div>
+      <div class="flash">
+        <div class="es">${esc(c.es)}</div>
+        ${shown ? `<div class="en">${esc(c.en)} <button class="speak" id="fSpeak">🔊</button></div><div class="pr">${esc(c.pr)}</div>` : ""}
+        <div class="btnrow" style="justify-content:center;margin-top:18px">
+          ${shown
+            ? `<button class="btn red" id="fHard">😅 Difícil</button><button class="btn done" id="fEasy">😎 La sabía</button>`
+            : `<button class="btn" id="fShow">Mostrar respuesta</button>`}
+        </div></div>`;
+    const sh = document.getElementById("fShow");
+    if (sh) sh.onclick = () => { shown = true; paint(); speak(c.en, false); };
+    const sp = document.getElementById("fSpeak"); if (sp) sp.onclick = () => speak(c.en, false);
+    const ez = document.getElementById("fEasy"); if (ez) ez.onclick = () => grade(true);
+    const hd = document.getElementById("fHard"); if (hd) hd.onclick = () => grade(false);
+  }
+  function grade(easy){
+    const c = due[idx];
+    const e = S.srs[c.id] || {box:0};
+    if (easy){ e.box = Math.min(e.box + 1, INTERVALS.length - 1); e.due = addDays(INTERVALS[e.box]); }
+    else { e.box = 0; e.due = addDays(1); }
+    S.srs[c.id] = e; save();
+    done++; idx++;
+    shown = false;
+    if (idx >= due.length){
+      view.innerHTML = `<div class="card"><h2>🔁 ¡Repaso terminado!</h2><p>Repasaste <b>${done}</b> palabra${done > 1 ? "s" : ""} hoy. ⭐ Las difíciles volverán mañana; las fáciles, más adelante.</p></div>`;
+      return;
+    }
+    paint();
+  }
+  paint();
+}
+
+// ============ PLAN ============
+function renderPlan(){
+  let h = `<div class="card"><h2>🗺️ Bloque 1 · Desde cero (A1)</h2>`;
+  WEEKS.forEach(w => {
+    const cur = w.n === S.week;
+    const days = ["0","1","2","3","4","w"].filter(d => S.completed[w.n + "-" + d]).length;
+    const full = days >= 6;
+    h += `<div class="plan-item"><span class="wn">${w.n}</span>
+      <span class="tt">${esc(w.theme)} ${w.review ? '<span class="badge rev">repaso</span>' : ""} ${cur ? '<span class="badge now">actual</span>' : ""} ${full ? "✅" : ""}
+      <small>${esc(w.goal)}</small></span>
+      ${cur ? "" : `<button class="btn small ghost" data-goweek="${w.n}">Ir</button>`}</div>`;
+  });
+  h += `</div>`;
+  [ROADMAP.b2, ROADMAP.b3].forEach(b => {
+    h += `<div class="card"><h2>🔒 ${esc(b.name)}</h2>`;
+    b.weeks.forEach(x => {
+      h += `<div class="plan-item"><span class="wn">${x[0]}</span><span class="tt">${esc(x[1])}<small>${esc(x[2])}</small></span><span class="badge lock">pronto</span></div>`;
+    });
+    h += `</div>`;
+  });
+  h += `<div class="card"><p class="hint">Los Bloques 2 y 3 están mapeados pero aún no tienen contenido: cuando vayas por la semana 10, dile a tu profesor que lo genere para que sigas sin pausa. 😉</p></div>`;
+  view.innerHTML = h;
+  view.querySelectorAll("[data-goweek]").forEach(b => b.onclick = () => { S.week = parseInt(b.dataset.goweek); save(); goTab("semana"); window.scrollTo(0,0); });
+}
+
+// ============ PROGRESO + MODO PROFESOR ============
+function weeklyGrade(g){
+  const ts = ["t1","t2","t3","t4","t5"].map(k => g[k]).filter(x => typeof x === "number" && !isNaN(x));
+  const hasT = ts.length > 0, hasQ = typeof g.quiz === "number" && !isNaN(g.quiz);
+  if (!hasT && !hasQ) return null;
+  const tAvg = hasT ? ts.reduce((a,b) => a + b, 0) / ts.length : null;
+  const qOn5 = hasQ ? g.quiz / 2 : null;
+  if (hasT && hasQ) return Math.round((tAvg * 0.5 + qOn5 * 0.5) * 10) / 10;
+  return Math.round((hasT ? tAvg : qOn5) * 10) / 10;
+}
+let GRADEWEEK = null;
+function renderProgreso(){
+  const graded = WEEKS.map(w => ({n:w.n, g:S.grades[w.n] ? weeklyGrade(S.grades[w.n]) : null}));
+  let h = `<div class="card"><h2>⭐ Tu progreso</h2><div class="statgrid">
+    <div><div class="num">🔥 ${S.streakCount}</div><div class="lbl">días seguidos</div></div>
+    <div><div class="num">${Object.keys(S.completed).length}</div><div class="lbl">sesiones hechas</div></div>
+    <div><div class="num">${countWeekends()}/12</div><div class="lbl">clases con quiz</div></div>
+  </div></div>`;
+  const withG = graded.filter(x => x.g !== null);
+  h += `<div class="card"><h2>📊 Notas semanales</h2>`;
+  if (withG.length){
+    h += `<div class="bars" style="margin-bottom:26px">`;
+    graded.forEach(x => {
+      const pct = x.g === null ? 0 : (x.g / 5) * 100;
+      h += `<div class="b" title="Semana ${x.n}: ${x.g === null ? "—" : x.g}"><i style="height:${pct}%"></i><span>${x.n}</span></div>`;
+    });
+    h += `</div><table class="tbl"><tr><th>Semana</th><th>Nota (/5,0)</th><th>Notas del profesor</th></tr>`;
+    withG.forEach(x => {
+      h += `<tr><td>Semana ${x.n}</td><td><b>${x.g.toFixed(1)}</b></td><td class="hint">${esc((S.grades[x.n].notes || "").slice(0,120))}</td></tr>`;
+    });
+    h += `</table>`;
+  } else {
+    h += `<p class="hint">Aquí aparecerán tus notas cuando tu profesor califique la primera semana. La nota premia que se entienda, no la perfección. 💙</p>`;
+  }
+  h += `</div>`;
+
+  h += `<div class="teacher-line"><h2 style="font-size:1.1rem">🍎 Zona del profesor</h2>`;
+  if (!S.teacher){
+    h += `<p class="hint">Para calificar tareas y quizzes (rúbrica: se entiende 2,0 + vocabulario 1,5 + gramática 1,5 = 5,0 por tarea · quiz /10).</p>
+      <div class="btnrow"><button class="btn red small" id="teaOn">Activar modo profesor</button></div></div>`;
+  } else {
+    const gwk = GRADEWEEK || S.week;
+    const g = S.grades[gwk] || {};
+    h += `<div class="card" style="border-color:#F0C8C3">
+      <h3 style="margin-top:0">Calificar semana <select id="teaWeek">${WEEKS.map(w => `<option value="${w.n}" ${w.n === gwk ? "selected" : ""}>Semana ${w.n}</option>`).join("")}</select></h3>
+      <p class="hint">Tareas del cuaderno, de 0 a 5,0 cada una (deja vacías las no entregadas):</p>
+      <div class="grade-row">${[1,2,3,4,5].map(i => `<label>T${i} <input type="number" id="t${i}" min="0" max="5" step="0.1" value="${g["t" + i] ?? ""}"></label>`).join("")}</div>
+      <div class="grade-row"><label>Quiz (/10) <input type="number" id="tq" min="0" max="10" step="0.5" value="${g.quiz ?? ""}"></label></div>
+      <label class="hint">Errores recurrentes / notas para la próxima clase:</label>
+      <textarea class="notas" id="tn">${esc(g.notes || "")}</textarea>
+      <div class="btnrow"><button class="btn red" id="teaSave">Guardar nota</button><button class="btn small ghost" id="teaOff">Salir del modo profesor</button></div></div>
+    <div class="card"><h3 style="margin-top:0">Respaldo de datos</h3>
+      <p class="hint">El progreso vive en este navegador. Exporta un respaldo de vez en cuando (sirve también para pasar de celular).</p>
+      <div class="btnrow">
+        <button class="btn small ghost" id="expBtn">⬇️ Exportar respaldo</button>
+        <label class="btn small ghost" style="display:inline-flex;align-items:center">⬆️ Importar<input type="file" id="impBtn" accept=".json" style="display:none"></label>
+        <button class="btn small red" id="rstBtn">Borrar todo</button>
+      </div></div></div>`;
+  }
+  view.innerHTML = h;
+  const on = document.getElementById("teaOn"); if (on) on.onclick = () => { S.teacher = true; save(); render(); };
+  const off = document.getElementById("teaOff"); if (off) off.onclick = () => { S.teacher = false; GRADEWEEK = null; save(); render(); };
+  const tw = document.getElementById("teaWeek");
+  if (tw) tw.onchange = () => { GRADEWEEK = parseInt(tw.value); render(); };
+  const ts = document.getElementById("teaSave");
+  if (ts) ts.onclick = () => {
+    const wk = parseInt(document.getElementById("teaWeek").value);
+    const g = {};
+    [1,2,3,4,5].forEach(i => { const v = parseFloat(document.getElementById("t" + i).value); if (!isNaN(v)) g["t" + i] = Math.min(5, Math.max(0, v)); });
+    const q = parseFloat(document.getElementById("tq").value); if (!isNaN(q)) g.quiz = Math.min(10, Math.max(0, q));
+    g.notes = document.getElementById("tn").value;
+    S.grades[wk] = g; save(); render();
+  };
+  const ex = document.getElementById("expBtn");
+  if (ex) ex.onclick = () => {
+    const blob = new Blob([JSON.stringify(S, null, 2)], {type:"application/json"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+    a.download = "ingles-en-casa-respaldo.json"; a.click(); URL.revokeObjectURL(a.href);
+  };
+  const im = document.getElementById("impBtn");
+  if (im) im.onchange = (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => { try{ S = Object.assign({}, DEF, JSON.parse(r.result)); save(); render(); alert("Respaldo importado ✓"); }catch(err){ alert("Ese archivo no es un respaldo válido."); } };
+    r.readAsText(f);
+  };
+  const rs = document.getElementById("rstBtn");
+  if (rs) rs.onclick = () => { if (confirm("¿Borrar TODO el progreso y las notas? Esta acción no se puede deshacer.")){ S = Object.assign({}, DEF); save(); render(); } };
+}
+
+// ============ IMPRESIÓN ============
+function matchPrintData(w){
+  const order = seededShuffle(w.match.map((p,i) => i), w.n * 7 + 3);
+  const right = order.map((k,pos) => ({letter:LETTERS[pos], es:w.match[k][1], k}));
+  const answers = w.match.map((p,i) => { const pos = order.indexOf(i); return LETTERS[pos]; });
+  return {right, answers};
+}
+function printSheet(w, teacher){
+  const A = document.getElementById("printArea");
+  const mp = matchPrintData(w);
+  let h = "";
+  if (!teacher){
+    h += `<h1>Inglés en Casa · Semana ${w.n}: ${esc(w.theme)}</h1>
+      <p><b>Meta:</b> ${esc(w.goal)}. · 15–30 minutos al día. ¡No te saltes días! ⭐</p>`;
+    if (w.vocab.length){
+      h += `<h2>Vocabulario</h2><table><tr><th>Inglés</th><th>Suena como</th><th>Español</th></tr>`;
+      w.vocab.forEach(v => h += `<tr><td><b>${esc(v[0])}</b></td><td><i>${esc(v[1])}</i></td><td>${esc(v[2])}</td></tr>`);
+      h += `</table>`;
+    }
+    if (w.dialogue.length){
+      h += `<h2>Diálogo (escúchalo en la app)</h2>`;
+      w.dialogue.forEach(l => h += `<p><b>${esc(l[0])}:</b> ${esc(l[1])}</p>`);
+    }
+    h += `<h2>${w.review ? "Repaso" : "Gramática"}: ${esc(w.grammar.title)}</h2>`;
+    w.grammar.lines.forEach(l => h += `<p>${esc(l)}</p>`);
+    w.grammar.ex.forEach(e => h += `<p>• <b>${esc(e[0])}</b> — ${esc(e[1])}</p>`);
+    h += `<h2>Ejercicio 1 · Completa la frase</h2>`;
+    w.fill.forEach((f,i) => h += `<p>${i + 1}. ${esc(f[0]).replace("______", "____________")}</p>`);
+    h += `<h2>Ejercicio 2 · Une las parejas (escribe la letra)</h2><table><tr><th>Inglés</th><th></th><th>Español</th></tr>`;
+    w.match.forEach((p,i) => h += `<tr><td>${i + 1}. ${esc(p[0])}  (    )</td><td></td><td>${mp.right[i] ? mp.right[i].letter + ". " + esc(mp.right[i].es) : ""}</td></tr>`);
+    h += `</table><h2>Tareas en el cuaderno</h2>`;
+    w.paper.forEach((t,i) => h += `<p><b>${i <= 4 ? DAYNAMES[i] : "Extra"}:</b> ${esc(t)}</p>`);
+    h += `<p style="margin-top:14pt"><i>Hecho con cariño por tu profesor 💙</i></p>`;
+  } else {
+    h += `<h1>Hoja del profesor · Semana ${w.n}: ${esc(w.theme)}</h1>
+      <p><b>Rúbrica por tarea (/5,0):</b> el mensaje se entiende (2,0) + vocabulario de la semana (1,5) + gramática del tema (1,5). Máximo 3 correcciones detalladas por tarea; lo demás, a la lista de errores recurrentes. Quiz /10. Nota semanal = tareas 50 % + quiz 50 %.</p>
+      <h2>Quiz · Semana ${w.n} — Nombre: __________________ Nota: ____ /10</h2>
+      <p><b>Parte A (4 puntos) — Escribe en inglés:</b></p>`;
+    w.quiz.a.forEach((q,i) => h += `<p>${i + 1}. ${esc(q[0])}: ____________________</p>`);
+    h += `<p><b>Parte B (3 puntos) — Completa con:</b> ${w.quiz.b.bank.map(esc).join(" · ")}</p>`;
+    w.quiz.b.lines.forEach(l => h += `<p>${esc(l)}</p>`);
+    h += `<p><b>Parte C (3 puntos):</b></p>`;
+    w.quiz.c.forEach((q,i) => h += `<p>${i + 1}. ${esc(q[0])} ____________________</p>`);
+    if (w.evalGuide){
+      h += `<h2>Evaluación oral</h2>`;
+      w.evalGuide.forEach(g => h += `<p>• ${esc(g)}</p>`);
+    }
+    h += `<div class="pbreak"></div><h1>Respuestas · Semana ${w.n}</h1>
+      <h2>Ejercicio 1 (hoja de la semana)</h2><p>${w.fill.map((f,i) => (i + 1) + ". " + esc(f[1].split("/")[0])).join(" · ")}</p>
+      <h2>Ejercicio 2 (unir parejas)</h2><p>${mp.answers.map((a,i) => (i + 1) + "-" + a).join(" · ")}</p>
+      <h2>Quiz</h2>
+      <p><b>A:</b> ${w.quiz.a.map((q,i) => (i + 1) + ". " + esc(q[1])).join(" · ")}</p>
+      <p><b>B:</b> ${w.quiz.b.ans.map(esc).join(" · ")}</p>
+      <p><b>C:</b> ${w.quiz.c.map((q,i) => (i + 1) + ". " + esc(q[1])).join(" · ")}</p>
+      <h2>Errores recurrentes de la semana</h2>
+      <div class="writeline"></div><div class="writeline"></div><div class="writeline"></div><div class="writeline"></div>`;
+  }
+  A.innerHTML = h;
+  window.print();
+}
+
+// ============ ARRANQUE ============
+render();
+</script>
+</body>
+</html>
